@@ -152,6 +152,7 @@
             <article class="panel-card scanner-card">
               <div class="scanner-preview">
                 <i class="fa-solid fa-qrcode"></i>
+                <video id="scannerCameraPreview" autoplay playsinline muted hidden></video>
               </div>
               <div class="scanner-body">
                 <h3>Scan attendance QR</h3>
@@ -162,7 +163,6 @@
                   <button class="primary-btn" id="cameraScanBtn" type="button">Scan from camera</button>
                   <button class="primary-btn" id="stopCameraBtn" type="button" hidden>Stop camera</button>
                 </div>
-                <video id="scannerCameraPreview" autoplay playsinline muted hidden></video>
                 <button class="primary-btn" id="scanQrBtn" type="button">Verify attendance</button>
                 <div class="scanner-status" id="scannerStatus">Waiting for a QR scan.</div>
               </div>
