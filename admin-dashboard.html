@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HRIS Admin-dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  </head>
+  <body>
+  
+    <h1>Admin Dashboard</h1>
+    <button onclick="logout()">Logout</button>
+    
+    <script>
+
+      function requireAuth(){
+
+        const token = localStorage.getItem("token");
+      
+        if(!token){
+          window.location.href = "index.html";
+        }
+      
+      }
+      
+      function requireAdmin(){
+      
+        const role = localStorage.getItem("role");
+        const token = localStorage.getItem("token");
+      
+        if(!token){
+          window.location.href = "index.html";
+        }
+      
+        if(role !== "ADMIN" && role !== "HR"){
+          window.location.href = "dashboard.html";
+        }
+      
+      }
+      
+      window.onload = requireAdmin;
+      
+      function logout(){
+      
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("userId");
+      
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>

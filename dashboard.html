@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HRIS Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body class="dashboard-page">
+    <div class="dashboard-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="brand">
+            <span class="brand-icon"><i class="fa-solid fa-user-shield"></i></span>
+            <div>
+              <strong>HRIS</strong>
+              <small>Employee Portal</small>
+            </div>
+          </div>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-section="dashboard">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" data-section="attendanceScanner">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Attendance Scanner</span>
+          </button>
+          <button class="nav-item" data-section="attendanceLog">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Attendance Log</span>
+          </button>
+          <button class="nav-item" data-section="leaveApplication">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Leave Application</span>
+          </button>
+          <button class="nav-item" data-section="account">
+            <i class="fa-solid fa-user"></i>
+            <span>Account</span>
+          </button>
+        </nav>
+      </aside>
+
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="menu-btn" id="mobileMenuToggle" aria-label="Open menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <div>
+              <p class="topbar-eyebrow">Welcome back</p>
+              <h1 id="accountNameLabel">Hi AccountName</h1>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <button class="logout-btn" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <section class="dashboard-section active" id="dashboard">
+          <div class="section-head">
+            <div>
+              <p class="section-eyebrow">Overview</p>
+              <h2>Monthly attendance snapshot</h2>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span class="stat-label">Present</span>
+              <strong>24</strong>
+              <small>On-time attendance</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Late</span>
+              <strong>3</strong>
+              <small>Arrivals after shift start</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Leave</span>
+              <strong>2</strong>
+              <small>Approved leave days</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Absent</span>
+              <strong>1</strong>
+              <small>Unexcused absence</small>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel-card">
+              <div class="panel-head">
+                <h3>Earlyness trend</h3>
+                <span class="pill">This month</span>
+              </div>
+              <div class="earlyness-chart" aria-label="Earlyness trend chart">
+                <div class="chart-bar" style="--value: 74%"></div>
+                <div class="chart-bar" style="--value: 88%"></div>
+                <div class="chart-bar" style="--value: 92%"></div>
+                <div class="chart-bar" style="--value: 81%"></div>
+                <div class="chart-bar" style="--value: 95%"></div>
+              </div>
+              <div class="chart-labels">
+                <span>W1</span>
+                <span>W2</span>
+                <span>W3</span>
+                <span>W4</span>
+                <span>W5</span>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="panel-head">
+                <h3>Today’s note</h3>
+                <span class="pill">Reminder</span>
+              </div>
+              <ul class="check-list">
+                <li>Keep your attendance QR ready when arriving.</li>
+                <li>Submit leave requests at least 2 days in advance.</li>
+                <li>Review your attendance log for accuracy.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-section" id="attendanceScanner">
+          <div class="section-head">
+            <div>
+              <p class="section-eyebrow">Attendance</p>
+              <h2>QR scanner</h2>
+            </div>
+          </div>
+
+          <div class="content-grid single-column">
+            <article class="panel-card scanner-card">
+              <div class="scanner-preview">
+                <i class="fa-solid fa-qrcode"></i>
+              </div>
+              <div class="scanner-body">
+                <h3>Scan attendance QR</h3>
+                <p>Use the QR code generated on your device to mark attendance.</p>
+                <label class="field-label" for="qrInput">QR data</label>
+                <input id="qrInput" type="text" placeholder="Paste or scan QR code"  hidden/>
+                <button class="primary-btn" id="scanQrBtn">Verify attendance</button>
+                <div class="scanner-status" id="scannerStatus">Waiting for a QR scan.</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-section" id="attendanceLog">
+          <div class="section-head">
+            <div>
+              <p class="section-eyebrow">Records</p>
+              <h2>Attendance log</h2>
+            </div>
+          </div>
+
+          <article class="panel-card">
+            <div class="panel-head">
+              <h3>Recent activity</h3>
+              <span class="pill">Monthly</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Jun 27</td>
+                    <td>08:00</td>
+                    <td>17:30</td>
+                    <td><span class="status-tag ok">Present</span></td>
+                  </tr>
+                  <tr>
+                    <td>Jun 26</td>
+                    <td>08:12</td>
+                    <td>17:00</td>
+                    <td><span class="status-tag warning">Late</span></td>
+                  </tr>
+                  <tr>
+                    <td>Jun 25</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td><span class="status-tag danger">Absent</span></td>
+                  </tr>
+                  <tr>
+                    <td>Jun 24</td>
+                    <td>07:50</td>
+                    <td>17:10</td>
+                    <td><span class="status-tag info">Leave</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-section" id="leaveApplication">
+          <div class="section-head">
+            <div>
+              <p class="section-eyebrow">Requests</p>
+              <h2>Leave application</h2>
+            </div>
+            <button class="primary-btn" id="openLeaveModal">Apply leave</button>
+          </div>
+
+          <article class="panel-card">
+            <div class="panel-head">
+              <h3>Your leave requests</h3>
+              <span class="pill">Status</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="leaveTableBody">
+                  <tr>
+                    <td>Personal</td>
+                    <td>Jun 30</td>
+                    <td>Jul 01</td>
+                    <td>Family event</td>
+                    <td><span class="status-tag info">Pending</span></td>
+                    <td>
+                      <div class="action-group">
+                        <button class="table-action-btn edit-btn" data-action="edit" data-id="1">Edit</button>
+                        <button class="table-action-btn cancel-btn" data-action="cancel" data-id="1">Cancel</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Sick</td>
+                    <td>Jun 14</td>
+                    <td>Jun 14</td>
+                    <td>Fever</td>
+                    <td><span class="status-tag ok">Approved</span></td>
+                    <td>—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-section" id="account">
+          <div class="section-head">
+            <div>
+              <p class="section-eyebrow">Profile</p>
+              <h2>Account details</h2>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel-card">
+              <div class="panel-head">
+                <h3>Profile information</h3>
+                <span class="pill">Employee</span>
+              </div>
+              <ul class="detail-list">
+                <li><span>Complete Name</span><strong id="detailName">Juan Dela Cruz</strong></li>
+                <li><span>Employee ID</span><strong id="detailEmployeeId">—</strong></li>
+                <li><span>Company</span><strong id="detailCompany">Acme Global</strong></li>
+                <li><span>Branch Assigned</span><strong id="detailBranch">Manila</strong></li>
+                <li><span>Date Hired</span><strong id="detailDateHired">Jan 10, 2022</strong></li>
+                <li><span>Email</span><strong id="detailEmail">john.m@example.com</strong></li>
+                <li><span>Contact Number</span><strong id="detailContact">0917-123-4567</strong></li>
+                <li><span>Schedule</span><strong id="detailSchedule">8:00 AM - 5:00 PM</strong></li>
+              </ul>
+            </article>
+
+            <article class="panel-card">
+              <div class="panel-head">
+                <h3>Government details</h3>
+                <span class="pill">Mandatory</span>
+              </div>
+              <ul class="detail-list">
+                <li><span>SSS Number</span><strong id="detailSSS">01-2345678-9</strong></li>
+                <li><span>PhilHealth</span><strong id="detailPhilHealth">PH-123456789</strong></li>
+                <li><span>Pag-IBIG</span><strong id="detailPagIbig">1234-5678-9012</strong></li>
+                <li><span>TIN</span><strong id="detailTIN">123-456-789</strong></li>
+                <li><span>Tax</span><strong id="detailTax">N/A</strong></li>
+                <li><span>Dependents</span><strong id="detailDepend">0</strong></li>
+                <li><span>Bank</span><strong id="detailBank">Bank Name</strong></li>
+                <li><span>Bank Account</span><strong id="detailBankAccount">000-000-000</strong></li>
+              </ul>
+            </article>
+          </div>
+
+          <article class="panel-card">
+            <div class="panel-head">
+              <h3>Change password</h3>
+              <span class="pill">Secure</span>
+            </div>
+            <form class="account-form">
+              <label class="field-label" for="currentPassword">Current password</label>
+              <input id="currentPassword" type="password" placeholder="Enter current password" />
+              <label class="field-label" for="newPassword">New password</label>
+              <input id="newPassword" type="password" placeholder="Enter new password" />
+              <label class="field-label" for="confirmPassword">Confirm password</label>
+              <input id="confirmPassword" type="password" placeholder="Confirm new password" />
+              <button class="primary-btn" type="submit">Update password</button>
+            </form>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="leaveModal">
+      <div class="modal-card card">
+        <span class="close-btn" data-close-modal="leaveModal">&times;</span>
+        <h2>Apply Leave</h2>
+        <form id="leaveForm">
+          <label class="field-label" for="leaveType">Leave type</label>
+          <select id="leaveType" required>
+            <option value="">Select leave type</option>
+            <option value="Vacation">Vacation</option>
+            <option value="Sick">Sick</option>
+            <option value="Personal">Personal</option>
+            <option value="Emergency">Emergency</option>
+          </select>
+          <label class="field-label" for="leaveStartDate">Date range</label>
+          <div class="leave-date-group">
+            <input id="leaveStartDate" type="date" required />
+            <span>to</span>
+            <input id="leaveEndDate" type="date" required />
+          </div>
+          <label class="field-label" for="leaveReason">Reason</label>
+          <input id="leaveReason" placeholder="State your reason" required />
+          <button type="submit">Submit leave</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

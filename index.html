@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HRIS Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  </head>
+    
+  <body>
+
+    <span id="loginBtn" class="login-link">
+      <i class="fa-solid fa-user"></i>
+      Login
+    </span>
+      
+    <div class="blob"></div>
+    <div class="blob"></div>
+    
+    <div class="card">
+      
+        <h2>Attendance QR</h2>
+
+        <div class="qr-controls">
+          <select id="companySelect" class="qr-select">
+            <option value="">Select Company</option>
+          </select>
+          <select id="branchSelect" class="qr-select">
+            <option value="">Select Branch</option>
+          </select>
+        </div>
+      
+        <div id="attendanceQR" class="qr-image"></div>
+      
+        <p>Scan to record attendance</p>
+      
+        <div class="qr-expiry">
+          <small>QR Expires In</small>
+          <div id="qrTimer">00:00</div>
+        </div>
+      
+      </div>
+
+    <div id="loginModal" class="modal">
+    
+      <div class="modal-card card">
+    
+        <span class="close-btn" onclick="closeModal('loginModal')">
+          &times;
+        </span>
+    
+        <h2>HRIS Login</h2>
+    
+        <input
+          id="username"
+          placeholder="Username">
+    
+        <input
+          id="password"
+          type="password"
+          placeholder="Password">
+    
+        <button onclick="login()">
+          Sign In
+        </button>
+    
+        <div id="msg"></div>
+    
+      </div>
+    
+    </div>
+    
+  
+<script src="assets/js/app.js"></script>
+  
+  </body>
+</html>
