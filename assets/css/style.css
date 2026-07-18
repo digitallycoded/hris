@@ -590,26 +590,50 @@ body{
 }
 
 .scanner-card {
-  display: grid;
-  grid-template-columns: 220px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  align-items: center;
 }
 
 .scanner-preview {
-  min-height: 220px;
+  width: 100%;
+  min-height: 300px;
   border-radius: 18px;
   display: grid;
   place-items: center;
   background: rgba(255,255,255,0.9);
   color: var(--dark-text);
   font-size: 4rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.scanner-preview i {
+  position: absolute;
+  z-index: 1;
 }
 
 .scanner-body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.scanner-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#scannerCameraPreview {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 16px;
+  background: #08101f;
+  border: 1px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  display: block;
 }
 
 .scanner-status {
