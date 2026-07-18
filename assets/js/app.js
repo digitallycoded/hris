@@ -829,6 +829,9 @@ function initDashboardUI() {
   const leaveForm = document.getElementById("leaveForm");
   const leaveTableBody = document.getElementById("leaveTableBody");
   const scannerBtn = document.getElementById("scanQrBtn");
+  const cameraBtn = document.getElementById("cameraScanBtn");
+  const stopCameraBtn = document.getElementById("stopCameraBtn");
+  const cameraPreview = document.getElementById("scannerCameraPreview");
   const leaveTypeField = document.getElementById("leaveType");
   const leaveStartDateField = document.getElementById("leaveStartDate");
   const leaveEndDateField = document.getElementById("leaveEndDate");
@@ -837,6 +840,9 @@ function initDashboardUI() {
   let editingLeaveId = null;
   const scannerStatus = document.getElementById("scannerStatus");
   const qrInput = document.getElementById("qrInput");
+  let scannerStream = null;
+  let scannerLoopId = null;
+  let scannerDetector = null;
 
   const employeeData = localStorage.getItem("employee");
   const employee = employeeData ? JSON.parse(employeeData) : null;
@@ -958,6 +964,95 @@ function initDashboardUI() {
     const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !sidebar.classList.contains("open");
     sidebar.classList.toggle("open", shouldOpen);
     sidebarOverlay?.classList.toggle("show", shouldOpen);
+  }
+
+  function stopCameraScan() {
+    if (scannerLoopId) {
+      clearInterval(scannerLoopId);
+      scannerLoopId = null;
+    }
+
+    if (scannerStream) {
+      scannerStream.getTracks().forEach(track => track.stop());
+      scannerStream = null;
+    }
+
+    if (cameraPreview) {
+      cameraPreview.srcObject = null;
+      cameraPreview.hidden = true;
+    }
+
+    if (stopCameraBtn) {
+      stopCameraBtn.hidden = true;
+    }
+
+    if (cameraBtn) {
+      cameraBtn.disabled = false;
+    }
+  }
+
+  async function startCameraScan() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      scannerStatus.textContent = "Camera scanning is not supported on this device. Please paste the QR code manually.";
+      return;
+    }
+
+    if (!("BarcodeDetector" in window)) {
+      scannerStatus.textContent = "This browser does not support built-in QR camera scanning. Please paste the QR code manually.";
+      return;
+    }
+
+    try {
+      scannerStatus.textContent = "Opening camera...";
+      scannerDetector = new BarcodeDetector({ formats: ["qr_code"] });
+      scannerStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: "environment" }
+        },
+        audio: false
+      });
+
+      if (cameraPreview) {
+        cameraPreview.srcObject = scannerStream;
+        cameraPreview.hidden = false;
+      }
+
+      if (cameraBtn) {
+        cameraBtn.disabled = true;
+      }
+
+      if (stopCameraBtn) {
+        stopCameraBtn.hidden = false;
+      }
+
+      scannerStatus.textContent = "Scanning QR from camera...";
+
+      scannerLoopId = setInterval(async () => {
+        if (!scannerDetector || !cameraPreview || !cameraPreview.videoWidth) {
+          return;
+        }
+
+        try {
+          const detectedCodes = await scannerDetector.detect(cameraPreview);
+          const detectedCode = detectedCodes?.[0]?.rawValue?.trim();
+
+          if (!detectedCode) {
+            return;
+          }
+
+          qrInput.value = detectedCode;
+          scannerStatus.textContent = "QR scanned successfully. Verifying attendance...";
+          stopCameraScan();
+          await submitAttendanceVerification(detectedCode, scannerStatus);
+        } catch (detectError) {
+          console.warn("Unable to detect QR from camera stream:", detectError);
+        }
+      }, 900);
+    } catch (error) {
+      console.error("Unable to start camera scan:", error);
+      scannerStatus.textContent = "Unable to access the camera. Please paste the QR code manually.";
+      stopCameraScan();
+    }
   }
 
   mobileMenuToggle?.addEventListener("click", () => toggleSidebar());
@@ -1082,6 +1177,15 @@ function initDashboardUI() {
       }
       openModal(leaveModal);
     }
+  });
+
+  cameraBtn?.addEventListener("click", () => {
+    void startCameraScan();
+  });
+
+  stopCameraBtn?.addEventListener("click", () => {
+    stopCameraScan();
+    scannerStatus.textContent = "Camera stopped. You can still paste the QR code manually.";
   });
 
   scannerBtn?.addEventListener("click", async () => {
