@@ -220,6 +220,10 @@ async function submitAttendanceVerification(qrToken, statusElement) {
   const employeeData = localStorage.getItem("employee");
   const employee = employeeData ? JSON.parse(employeeData) : null;
   const userId = localStorage.getItem("userId") || employee?.employeeId || localStorage.getItem("employeeId") || "";
+  if (!userId) {
+      statusElement.textContent = "Employee not logged in.";
+      return false;
+  }
   const timestamp = new Date().toISOString();
   const location = await getCurrentLocation();
 
