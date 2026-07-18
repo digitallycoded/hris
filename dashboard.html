@@ -156,12 +156,12 @@
               <div class="scanner-body">
                 <!--h3>Scan attendance QR</h3>
                 <p>Use the QR code generated on your device to mark attendance.</p-->
+                <div class="scanner-status" id="scannerStatus">Waiting for a QR scan.</div>
                 <label class="field-label" for="qrInput">QR data</label>
                 <input id="qrInput" type="text" placeholder="Paste or scan QR code" />
-                  <button class="primary-btn" id="cameraScanBtn" type="button">Scan from camera</button>
-                  <button class="primary-btn" id="stopCameraBtn" type="button" hidden>Stop camera</button>
                 <button class="primary-btn" id="scanQrBtn" type="button">Verify attendance</button>
-                <div class="scanner-status" id="scannerStatus">Waiting for a QR scan.</div>
+                <button class="primary-btn" id="cameraScanBtn" type="button">Scan from camera</button>
+                <button class="primary-btn" id="stopCameraBtn" type="button" hidden>Stop camera</button>
               </div>
             </article>
           </div>
